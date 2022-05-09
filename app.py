@@ -122,13 +122,13 @@ def upload():
             if word == 'endseq':
                 break
         
-        return translator.translate(" ".join(in_text.split(" ")[1:-1]),"hi").text
+        return " ".join(in_text.split(" ")[1:-1])
     #path = 'Flicker8k_Dataset/111537222_07e56d5a30.jpg'
-    max_length = 35
+    max_length = 37
     with open('tokenizer.pkl', 'rb') as handle:
         tokenizer = pickle.load(handle)
 
-    model = load_model('models/best_model.h5')
+    model = load_model('best_model.h5')
     VGG16Model = VGG16()
     # restructure the model, if I have taken the last layer too, [-1] , that will be prediction layer, we
     # need it actually
