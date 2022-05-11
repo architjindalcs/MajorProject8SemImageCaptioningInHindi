@@ -1,4 +1,6 @@
+
 document.querySelector('#play-button').addEventListener("click",()=>{
+    console.log("Here...to listen");
     let synth = window.speechSynthesis;
     let utter = new SpeechSynthesisUtterance();
     let help=(text,lang) =>{

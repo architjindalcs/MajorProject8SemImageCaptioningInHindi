@@ -62,6 +62,11 @@ def frontPage():
 def home():
     return render_template('home.html')
 
+@app.route('/startcaptioningusingcamera')
+def camera():
+    return render_template('camera.html')
+
+
 @app.route('/image')
 def index():
     return render_template('index.html')
@@ -165,5 +170,5 @@ def upload():
     return None
 
 
-# if __name__ == '__main__':
-#     app.run(debug=True,port=5000) 
+if __name__ == '__main__':
+    app.run(debug=True,port=5000) 
