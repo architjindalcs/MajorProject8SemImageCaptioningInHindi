@@ -82,17 +82,10 @@ def upload():
         except:
             print("ERROR: Couldn't open image! Make sure the image path and extension is correct")
         image = load_img(img_path, target_size=(224, 224))
-        # convert image pixels to numpy array
         image = img_to_array(image)
-        # reshape data for model 
         image = image.reshape((1, image.shape[0], image.shape[1], image.shape[2]))
-        # preprocess image for vgg
         image = preprocess_input(image)
-        # extract features , verbose=0 (prevent displaying additional texts)
         feature = model.predict(image, verbose=0)
-        # get image ID, splitting on the . , because image names are like ../input/flickr8k/Images/1000268201_693b08cb0e.jpg
-        # so we want to get only 1000268201_693b08cb0e
-        # store feature
         print(feature)
         return feature
     
@@ -104,39 +97,26 @@ def upload():
 
 
     def predict_caption(model, image, tokenizer, max_length):
-    # add start tag for generation process
         in_text = 'startseq'
-        # iterate over the max length of sequence
         for i in range(max_length):
-            # encode input sequence
             sequence = tokenizer.texts_to_sequences([in_text])[0]
-            # pad the sequence
             sequence = pad_sequences([sequence], max_length)
-            # predict next word
             yhat = model.predict([image, sequence], verbose=0)
-            # get index with high probability
             yhat = np.argmax(yhat)
-            # convert index to word
             word = idx_to_word(yhat, tokenizer)
-            # stop if word not found
             if word is None:
                 break
-            # append word as input for generating next word
             in_text += " " + word
-            # stop if we reach end tag
             if word == 'endseq':
                 break
         
         return " ".join(in_text.split(" ")[1:-1])
-    #path = 'Flicker8k_Dataset/111537222_07e56d5a30.jpg'
     max_length = 37
     with open('tokenizer.pkl', 'rb') as handle:
         tokenizer = pickle.load(handle)
 
     model = load_model('best_model.h5')
     VGG16Model = VGG16()
-    # restructure the model, if I have taken the last layer too, [-1] , that will be prediction layer, we
-    # need it actually
     VGG16Model = Model(inputs=VGG16Model.inputs, outputs=VGG16Model.layers[-2].output)
 
     def allowed_image(fname):
@@ -161,7 +141,6 @@ def upload():
             f.save(file_path)
             photo = extract_features(file_path, VGG16Model)
             description = predict_caption(model, photo, tokenizer, max_length)
-            # result= description[6:-3]
             if os.path.exists(file_path):
                 os.remove(file_path)
             return description

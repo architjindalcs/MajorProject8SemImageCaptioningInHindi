@@ -7,10 +7,6 @@ document.querySelector('#play-button').addEventListener("click",()=>{
         utter.lang = lang;
         utter.text = text;
         utter.volume = 0.5;
-        
-        // event after text has been spoken
-        
-        // speak
         window.speechSynthesis.speak(utter);    
     }
 
@@ -57,8 +53,7 @@ function upload() {
     const file = DataURIToBlob(imgBase64)
     const formData = new FormData();
     formData.append('file', file, 'image.jpg') 
-    
-    // var form_data = new FormData(image);
+ 
     $('.loader').show();
     $.ajax({
         type: 'POST',
