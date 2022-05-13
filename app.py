@@ -114,7 +114,6 @@ def upload():
     max_length = 37
     with open('tokenizer.pkl', 'rb') as handle:
         tokenizer = pickle.load(handle)
-
     model = load_model('best_model.h5')
     VGG16Model = VGG16()
     VGG16Model = Model(inputs=VGG16Model.inputs, outputs=VGG16Model.layers[-2].output)
